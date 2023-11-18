@@ -13,15 +13,30 @@ type ContactObj = {
 
 export default function Search() {
   const [nome, setNome] = useState("");
-  const [numero, setNumero] = useState("");
   const [contato, setContato] = useState<ContactObj[]>();
-  const [refresh, setRefresh] = useState(true);
+  const [refresh, setRefresh] = useState(false);
+  const [form, setForm] = useState({ NOME: "", IDADE: "", NUMERO: "" });
+  const [updateId, setUpadateId] = useState(0);
+  console.log(form);
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  }
 
-  async function handleUpdate(id: any) {
+  async function handleUpdate(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const body = {
+      NOME: form.NOME,
+      IDADE: Number(form.IDADE),
+      NUMERO: form.NUMERO,
+    };
     try {
       const updateContat = await axios.patch(
-        `http://localhost:5000/contacts/${id}`
+        `http://localhost:5000/contacts/${updateId}`,
+        body
       );
+      const search = await axios.get(`http://localhost:5000/contacts/${nome}`);
+
+      setContato(search.data);
     } catch (error: any) {
       alert(error.message);
     }
@@ -34,8 +49,6 @@ export default function Search() {
       );
       const search = await axios.get(`http://localhost:5000/contacts/${nome}`);
       setContato(search.data);
-
-      alert(deleteContact.statusText);
     } catch (error: any) {
       alert(error.message);
     }
@@ -88,6 +101,55 @@ export default function Search() {
           Pesquisar Telefone
         </button>
       </form>
+      {refresh ? (
+        <>
+          <div>Editar Contato</div>
+          <form className="flex flex-col gap-3" onSubmit={handleUpdate}>
+            <input
+              className="border border-slate-300 bg-transparent rounded px-2 py-1 focus-within:border-slate-100 "
+              placeholder="Nome"
+              name="NOME"
+              type="text"
+              onChange={handleChange}
+            />
+            <input
+              className="border border-slate-300 bg-transparent rounded px-2 py-1 focus-within:border-slate-100 "
+              placeholder="Idade"
+              name="IDADE"
+              type="text"
+              onChange={handleChange}
+            />
+            <input
+              className="border border-slate-300 bg-transparent rounded px-2 py-1 focus-within:border-slate-100 "
+              placeholder="Número"
+              name="NUMERO"
+              type="text"
+              onChange={handleChange}
+            />
+
+            <div className=" flex mb-6">
+              <button
+                className=" w-1/2 border border-slate-300 px-2 py-1 rounded  hover:bg-slate-600 focus-within:bg-slate-700 outline-none "
+                onClick={() => {
+                  setForm({ NOME: "", IDADE: "", NUMERO: "" });
+                  setRefresh(!refresh);
+                }}
+              >
+                Cancelar
+              </button>
+              <button
+                className=" w-1/2 border border-slate-300 px-2 py-1 rounded  hover:bg-yellow-800 focus-within:bg-slate-700 outline-none "
+                type="submit"
+              >
+                Registrar
+              </button>
+            </div>
+          </form>{" "}
+        </>
+      ) : (
+        ""
+      )}
+
       <ul className="bg-slate-900 px-4">
         {contato?.map((value, index) => (
           <li
@@ -103,7 +165,10 @@ export default function Search() {
               <button
                 className=" w-1/2 border border-slate-300 px-2 py-1 rounded  hover:bg-yellow-800 focus-within:bg-slate-700 outline-none "
                 type="submit"
-                onClick={handleUpdate}
+                onClick={() => {
+                  setUpadateId(value.ID);
+                  setRefresh(!refresh);
+                }}
               >
                 Editar
               </button>

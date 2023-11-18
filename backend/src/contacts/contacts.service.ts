@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateContactDto } from './dto/CreateContactDto';
 import { UpdateContactDto } from './dto/update-contact.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { contato } from '@prisma/client';
+import { contato, telefone } from '@prisma/client';
 
 @Injectable()
 export class ContactsService {
