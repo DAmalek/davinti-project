@@ -15,8 +15,11 @@ export default function Home() {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:5000/contacts");
-    } catch (error) {}
+      await axios.post("http://localhost:5000/contacts", form);
+    } catch (error: any) {
+      alert(error.response.data);
+      console.log(error);
+    }
   }
 
   //console.log(form);
