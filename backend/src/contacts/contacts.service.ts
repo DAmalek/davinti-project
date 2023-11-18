@@ -3,6 +3,10 @@ import { CreateContactDto } from './dto/CreateContactDto';
 import { UpdateContactDto } from './dto/update-contact.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { contato, telefone } from '@prisma/client';
+import path from 'path';
+import * as fs from 'fs';
+import { time } from 'console';
+import { timestamp } from 'rxjs';
 
 @Injectable()
 export class ContactsService {
@@ -57,8 +61,49 @@ export class ContactsService {
   }
 
   async remove(id: number) {
-    return await this.prisma.contato.delete({
-      where: { ID: id },
-    });
+    try {
+      const contatoParaExcluir = await this.prisma.contato.findUnique({
+        where: { ID: id },
+      });
+
+      await this.prisma.contato.delete({
+        where: { ID: id },
+      });
+
+      // Registrar o log em um arquivo texto
+      const logMessage = `Contato excluído: ${JSON.stringify(
+        contatoParaExcluir,
+      )} - ${new Date().toLocaleString()}\n`;
+      fs.appendFileSync('./src/contacts/contatos.txt', logMessage);
+
+      console.log('Contato e telefones excluídos com sucesso');
+    } catch (error) {
+      console.error('Erro ao excluir contato e telefones:', error);
+    }
   }
 }
+// async function excluirContatoETelefones(contatoId) {
+//   try {
+//     // Buscar informações do contato antes de excluí-lo (para registro de log)
+//     const contatoParaExcluir = await prisma.contato.findUnique({
+//       where: { id: contatoId },
+//     });
+
+//     // Excluir o contato
+//     await prisma.contato.delete({
+//       where: { id: contatoId },
+//     });
+
+//     // Registrar o log em um arquivo texto
+//     const logMessage = `Contato excluído: ${JSON.stringify(
+//       contatoParaExcluir,
+//     )} - ${new Date().toLocaleString()}\n`;
+//     fs.appendFileSync('logs.txt', logMessage);
+
+//     console.log('Contato e telefones excluídos com sucesso');
+//   } catch (error) {
+//     console.error('Erro ao excluir contato e telefones:', error);
+//   } finally {
+//     await prisma.$disconnect(); // Fecha a conexão com o banco de dados
+//   }
+// }
