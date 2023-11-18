@@ -11,13 +11,13 @@ export default function Home() {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  async function handleSubmit(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     try {
       await axios.post("http://localhost:5000/contacts", form);
     } catch (error: any) {
-      alert(error.response.data);
+      alert(error.message);
       console.log(error);
     }
   }
@@ -27,7 +27,7 @@ export default function Home() {
   return (
     <>
       <Header title="Davint App - Agenda Telefônica" />
-      <form className="flex flex-col gap-3">
+      <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
         <input
           className="border border-slate-300 bg-transparent rounded px-2 py-1 focus-within:border-slate-100 "
           placeholder="Nome"
@@ -51,7 +51,7 @@ export default function Home() {
         />
 
         <div className=" flex mt-6">
-          <LinkBtn title="Pesquisar" path="/" />
+          <LinkBtn title="Pesquisar" path="/search" />
           <button
             className=" w-1/2 border border-slate-300 px-2 py-1 rounded  hover:bg-green-800 focus-within:bg-slate-700 outline-none "
             type="submit"

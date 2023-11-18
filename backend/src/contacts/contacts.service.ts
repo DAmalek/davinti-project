@@ -3,7 +3,6 @@ import { CreateContactDto } from './dto/CreateContactDto';
 import { UpdateContactDto } from './dto/update-contact.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { contato } from '@prisma/client';
-import { NOT_EQUALS } from 'class-validator';
 
 @Injectable()
 export class ContactsService {
