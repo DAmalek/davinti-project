@@ -38,8 +38,23 @@ export class ContactsService {
     return contato;
   }
 
-  update(id: number, updateContactDto: UpdateContactDto) {
-    return `This action updates a #${id} contact`;
+  async update(id: number, updateContactDto: UpdateContactDto) {
+    await this.prisma.contato.update({
+      where: { ID: id },
+      data: { NOME: updateContactDto.NOME, IDADE: updateContactDto.IDADE },
+    });
+    const telefoneExist = await this.prisma.telefone.findFirst({
+      where: { IDCONTATO: id },
+    });
+    await this.prisma.telefone.update({
+      where: { ID: telefoneExist.ID },
+      data: { NUMERO: updateContactDto.NUMERO },
+    });
+
+    return await this.prisma.contato.findFirst({
+      where: { ID: id },
+      include: { telefone: true },
+    });
   }
 
   remove(id: number) {
