@@ -28,7 +28,7 @@ export class ContactsService {
   }
 
   async findOne(NOME: string) {
-    const contato: contato = await this.prisma.contato.findFirst({
+    const contato: contato[] = await this.prisma.contato.findMany({
       where: { NOME },
       include: { telefone: true },
     });

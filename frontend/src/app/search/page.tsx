@@ -2,7 +2,7 @@
 import { Header } from "@/components/Header";
 import { LinkBtn } from "@/components/LinkBtn";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 type ContactObj = {
   ID: number;
@@ -14,9 +14,32 @@ type ContactObj = {
 export default function Search() {
   const [nome, setNome] = useState("");
   const [numero, setNumero] = useState("");
-  const [contato, setContato] = useState<ContactObj>();
+  const [contato, setContato] = useState<ContactObj[]>();
+  const [refresh, setRefresh] = useState(true);
 
-  console.log(contato?.telefone[0].NUMERO);
+  async function handleUpdate(id: any) {
+    try {
+      const updateContat = await axios.patch(
+        `http://localhost:5000/contacts/${id}`
+      );
+    } catch (error: any) {
+      alert(error.message);
+    }
+  }
+
+  async function handleDelete(id: any) {
+    try {
+      const deleteContact = await axios.delete(
+        `http://localhost:5000/contacts/${id}`
+      );
+      const search = await axios.get(`http://localhost:5000/contacts/${nome}`);
+      setContato(search.data);
+
+      alert(deleteContact.statusText);
+    } catch (error: any) {
+      alert(error.message);
+    }
+  }
 
   async function handleNameSearch(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -24,7 +47,7 @@ export default function Search() {
     try {
       const search = await axios.get(`http://localhost:5000/contacts/${nome}`);
       setContato(search.data);
-      alert(search.statusText);
+      //alert(search.statusText);
     } catch (error: any) {
       alert(error.message);
     }
@@ -66,27 +89,34 @@ export default function Search() {
         </button>
       </form>
       <ul className="bg-slate-900 px-4">
-        <li className="flex gap-3 justify-between items-center">
-          <div className="flex gap-5">
-            <div>{contato?.NOME}</div>
-            <div>{contato?.IDADE}</div>
-            <div>{contato?.telefone[0].NUMERO}</div>
-          </div>
-          <div className="flex gap-5 ">
-            <button
-              className=" w-1/2 border border-slate-300 px-2 py-1 rounded  hover:bg-yellow-800 focus-within:bg-slate-700 outline-none "
-              type="submit"
-            >
-              Editar
-            </button>
-            <button
-              className=" w-1/2 border border-slate-300 px-2 py-1 rounded  hover:bg-red-800 focus-within:bg-slate-700 outline-none "
-              type="submit"
-            >
-              Deletar
-            </button>
-          </div>
-        </li>
+        {contato?.map((value, index) => (
+          <li
+            className="flex gap-3 justify-between items-center"
+            key={value.ID}
+          >
+            <div className="flex gap-5">
+              <div>{value?.NOME}</div>
+              <div>{value?.IDADE}</div>
+              <div>{value?.telefone[0].NUMERO}</div>
+            </div>
+            <div className="flex gap-5 ">
+              <button
+                className=" w-1/2 border border-slate-300 px-2 py-1 rounded  hover:bg-yellow-800 focus-within:bg-slate-700 outline-none "
+                type="submit"
+                onClick={handleUpdate}
+              >
+                Editar
+              </button>
+              <button
+                className=" w-1/2 border border-slate-300 px-2 py-1 rounded  hover:bg-red-800 focus-within:bg-slate-700 outline-none "
+                type="submit"
+                onClick={() => handleDelete(value.ID)}
+              >
+                Deletar
+              </button>
+            </div>
+          </li>
+        ))}
       </ul>
     </>
   );
