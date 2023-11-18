@@ -4,8 +4,14 @@ import { LinkBtn } from "@/components/LinkBtn";
 import axios from "axios";
 import React, { useState } from "react";
 
+type RegistrationForm = {
+  NOME: string;
+  IDADE: number | string;
+  NUMERO: string;
+};
+
 export default function Home() {
-  const [form, setForm] = useState({});
+  const [form, setForm] = useState({ NOME: "", IDADE: "", NUMERO: "" });
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -14,8 +20,17 @@ export default function Home() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
+    const body = {
+      ...form,
+      IDADE: Number(form.IDADE),
+    };
+
     try {
-      await axios.post("http://localhost:5000/contacts", form);
+      const registration = await axios.post(
+        "http://localhost:5000/contacts",
+        body
+      );
+      alert(registration.statusText);
     } catch (error: any) {
       alert(error.message);
       console.log(error);
@@ -34,6 +49,7 @@ export default function Home() {
           name="NOME"
           type="text"
           onChange={handleChange}
+          required
         />
         <input
           className="border border-slate-300 bg-transparent rounded px-2 py-1 focus-within:border-slate-100 "
@@ -41,6 +57,7 @@ export default function Home() {
           name="IDADE"
           type="text"
           onChange={handleChange}
+          required
         />
         <input
           className="border border-slate-300 bg-transparent rounded px-2 py-1 focus-within:border-slate-100 "
@@ -48,6 +65,7 @@ export default function Home() {
           name="NUMERO"
           type="text"
           onChange={handleChange}
+          required
         />
 
         <div className=" flex mt-6">

@@ -1,11 +1,33 @@
 "use client";
 import { Header } from "@/components/Header";
 import { LinkBtn } from "@/components/LinkBtn";
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
+
+type ContactObj = {
+  ID: number;
+  NOME: string;
+  IDADE: number;
+  telefone: [{ ID: number; IDCONTATO: number; NUMERO: string }];
+};
 
 export default function Search() {
+  const [nome, setNome] = useState("");
+  const [numero, setNumero] = useState("");
+  const [contato, setContato] = useState<ContactObj>();
+
+  console.log(contato?.telefone[0].NUMERO);
+
   async function handleNameSearch(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    try {
+      const search = await axios.get(`http://localhost:5000/contacts/${nome}`);
+      setContato(search.data);
+      alert(search.statusText);
+    } catch (error: any) {
+      alert(error.message);
+    }
   }
   return (
     <>
@@ -17,6 +39,8 @@ export default function Search() {
           placeholder="Nome"
           name="NOME"
           type="text"
+          onChange={(e) => setNome(e.target.value)}
+          required
         />
         <button
           className=" w-1/2 border border-slate-300 px-2 py-1 rounded  hover:bg-green-800 focus-within:bg-slate-700 outline-none "
@@ -31,6 +55,8 @@ export default function Search() {
           placeholder="Telefone"
           name="NUMERO"
           type="text"
+          onChange={(e) => setNome(e.target.value)}
+          required
         />
         <button
           className=" w-1/2 border border-slate-300 px-2 py-1 rounded  hover:bg-green-800 focus-within:bg-slate-700 outline-none "
@@ -42,9 +68,9 @@ export default function Search() {
       <ul className="bg-slate-900 px-4">
         <li className="flex gap-3 justify-between items-center">
           <div className="flex gap-5">
-            <div>NOME</div>
-            <div>IDADE</div>
-            <div>TELEFONE</div>
+            <div>{contato?.NOME}</div>
+            <div>{contato?.IDADE}</div>
+            <div>{contato?.telefone[0].NUMERO}</div>
           </div>
           <div className="flex gap-5 ">
             <button
