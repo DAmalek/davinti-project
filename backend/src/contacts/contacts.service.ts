@@ -57,7 +57,9 @@ export class ContactsService {
     });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} contact`;
+  async remove(id: number) {
+    return await this.prisma.contato.delete({
+      where: { ID: id },
+    });
   }
 }

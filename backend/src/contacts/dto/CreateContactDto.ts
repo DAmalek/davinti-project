@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsString } from 'class-validator';
+import { IsInt, IsNotEmpty, IsString, MinLength } from 'class-validator';
 
 export class CreateContactDto {
   @IsString()
@@ -11,5 +11,6 @@ export class CreateContactDto {
 
   @IsString()
   @IsNotEmpty()
+  @MinLength(9)
   NUMERO: string;
 }

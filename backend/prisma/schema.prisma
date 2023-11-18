@@ -18,5 +18,5 @@ model telefone {
   ID        Int     @id @default(autoincrement())
   IDCONTATO Int
   NUMERO    String  @db.VarChar(16)
-  contato   contato @relation(fields: [IDCONTATO], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "telefone_fk0")
+  contato   contato @relation(fields: [IDCONTATO], references: [ID], onDelete: Cascade, onUpdate: NoAction, map: "telefone_fk0")
 }
