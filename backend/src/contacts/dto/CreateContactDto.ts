@@ -8,4 +8,8 @@ export class CreateContactDto {
   @IsInt()
   @IsNotEmpty()
   IDADE: number;
+
+  @IsString()
+  @IsNotEmpty()
+  NUMERO: string;
 }
