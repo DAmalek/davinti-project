@@ -3,10 +3,7 @@ import { CreateContactDto } from './dto/CreateContactDto';
 import { UpdateContactDto } from './dto/update-contact.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { contato, telefone } from '@prisma/client';
-import path from 'path';
 import * as fs from 'fs';
-import { time } from 'console';
-import { timestamp } from 'rxjs';
 
 @Injectable()
 export class ContactsService {
@@ -42,12 +39,15 @@ export class ContactsService {
   }
 
   async update(id: number, updateContactDto: UpdateContactDto) {
+    const telefoneExist = await this.prisma.telefone.findFirst({
+      where: { IDCONTATO: id },
+    });
+    if (!telefoneExist)
+      throw new HttpException('contact not found', HttpStatus.NOT_FOUND);
+
     await this.prisma.contato.update({
       where: { ID: id },
       data: { NOME: updateContactDto.NOME, IDADE: updateContactDto.IDADE },
-    });
-    const telefoneExist = await this.prisma.telefone.findFirst({
-      where: { IDCONTATO: id },
     });
     await this.prisma.telefone.update({
       where: { ID: telefoneExist.ID },
