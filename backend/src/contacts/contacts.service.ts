@@ -65,12 +65,10 @@ export class ContactsService {
       const contatoParaExcluir = await this.prisma.contato.findUnique({
         where: { ID: id },
       });
-
       await this.prisma.contato.delete({
         where: { ID: id },
       });
 
-      // Registrar o log em um arquivo texto
       const logMessage = `Contato excluído: ${JSON.stringify(
         contatoParaExcluir,
       )} - ${new Date().toLocaleString()}\n`;
@@ -82,28 +80,3 @@ export class ContactsService {
     }
   }
 }
-// async function excluirContatoETelefones(contatoId) {
-//   try {
-//     // Buscar informações do contato antes de excluí-lo (para registro de log)
-//     const contatoParaExcluir = await prisma.contato.findUnique({
-//       where: { id: contatoId },
-//     });
-
-//     // Excluir o contato
-//     await prisma.contato.delete({
-//       where: { id: contatoId },
-//     });
-
-//     // Registrar o log em um arquivo texto
-//     const logMessage = `Contato excluído: ${JSON.stringify(
-//       contatoParaExcluir,
-//     )} - ${new Date().toLocaleString()}\n`;
-//     fs.appendFileSync('logs.txt', logMessage);
-
-//     console.log('Contato e telefones excluídos com sucesso');
-//   } catch (error) {
-//     console.error('Erro ao excluir contato e telefones:', error);
-//   } finally {
-//     await prisma.$disconnect(); // Fecha a conexão com o banco de dados
-//   }
-// }

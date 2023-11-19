@@ -82,25 +82,10 @@ export default function Search() {
           className=" w-1/2 border border-slate-300 px-2 py-1 rounded  hover:bg-green-800 focus-within:bg-slate-700 outline-none "
           type="submit"
         >
-          Pesquisar Nome
+          Pesquisar
         </button>
       </form>
-      <form className="flex flex-col gap-3 my-5">
-        <input
-          className="border border-slate-300 bg-transparent rounded px-2 py-1 focus-within:border-slate-100 "
-          placeholder="Telefone"
-          name="NUMERO"
-          type="text"
-          onChange={(e) => setNome(e.target.value)}
-          required
-        />
-        <button
-          className=" w-1/2 border border-slate-300 px-2 py-1 rounded  hover:bg-green-800 focus-within:bg-slate-700 outline-none "
-          type="submit"
-        >
-          Pesquisar Telefone
-        </button>
-      </form>
+
       {refresh ? (
         <>
           <div>Editar Contato</div>
