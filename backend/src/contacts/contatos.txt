@@ -1,1 +1,10 @@
 
+Contato excluído: {"ID":36,"NOME":"gabriel","IDADE":35} - 11/18/2023, 10:25:40 PM
+Contato excluído: {"ID":39,"NOME":"sofia","IDADE":29} - 11/18/2023, 10:36:44 PM
+Contato excluído: {"ID":40,"NOME":"naldo","IDADE":59} - 11/18/2023, 10:48:00 PM
+Contato excluído: {"ID":43,"NOME":"reinaldo","IDADE":59} - 11/18/2023, 10:55:55 PM
+Contato excluído: {"ID":44,"NOME":"reinaldo","IDADE":62} - 11/18/2023, 10:55:57 PM
+Contato excluído: {"ID":45,"NOME":"SOFIA","IDADE":19} - 11/21/2023, 2:22:25 PM
+Contato excluído: {"ID":46,"NOME":"SOFIA","IDADE":19} - 11/21/2023, 2:22:47 PM
+Contato excluído: {"ID":47,"NOME":"SOFIA","IDADE":19} - 11/21/2023, 2:22:50 PM
+Contato excluído: {"ID":48,"NOME":"SOFIA","IDADE":19} - 11/21/2023, 2:22:53 PM

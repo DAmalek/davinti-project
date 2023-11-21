@@ -27,7 +27,7 @@ export class ContactsController {
 
   @Get(':NOME')
   findOne(@Param('NOME') NOME: string) {
-    return this.contactsService.findOne(NOME);
+    return this.contactsService.findByName(NOME);
   }
 
   @Patch(':id')

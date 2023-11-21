@@ -28,12 +28,12 @@ export class ContactsService {
     });
   }
 
-  async findOne(NOME: string) {
+  async findByName(NOME: string) {
     const contato: contato[] = await this.prisma.contato.findMany({
       where: { NOME },
       include: { telefone: true },
     });
-    if (!contato)
+    if (contato.length === 0)
       throw new HttpException('contact not found', HttpStatus.NOT_FOUND);
     return contato;
   }
@@ -61,22 +61,22 @@ export class ContactsService {
   }
 
   async remove(id: number) {
-    try {
-      const contatoParaExcluir = await this.prisma.contato.findUnique({
-        where: { ID: id },
-      });
-      await this.prisma.contato.delete({
-        where: { ID: id },
-      });
+    const contatoParaExcluir = await this.prisma.contato.findUnique({
+      where: { ID: id },
+    });
 
-      const logMessage = `Contato excluído: ${JSON.stringify(
-        contatoParaExcluir,
-      )} - ${new Date().toLocaleString()}\n`;
-      fs.appendFileSync('./src/contacts/contatos.txt', logMessage);
+    if (!contatoParaExcluir)
+      throw new HttpException('contact not found', HttpStatus.NOT_FOUND);
 
-      console.log('Contato e telefones excluídos com sucesso');
-    } catch (error) {
-      console.error('Erro ao excluir contato e telefones:', error);
-    }
+    await this.prisma.contato.delete({
+      where: { ID: id },
+    });
+
+    const logMessage = `Contato excluído: ${JSON.stringify(
+      contatoParaExcluir,
+    )} - ${new Date().toLocaleString()}\n`;
+    fs.appendFileSync('./src/contacts/contatos.txt', logMessage);
+
+    console.log('Contato e telefones excluídos com sucesso');
   }
 }
