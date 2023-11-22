@@ -38,6 +38,8 @@ Certifique-se de ter as seguintes ferramentas instaladas em seu sistema:
 
    ```bash
     npx prisma migrate dev
+
+    npx prisma generate
    ```
 
 5. Após a configuração, você pode iniciar o projeto localmente. Execute o seguinte comando:
@@ -48,7 +50,7 @@ Certifique-se de ter as seguintes ferramentas instaladas em seu sistema:
     npx run start:dev
    ```
 
-## Para Frontend
+# Para Frontend
 
 1. Crie um localhost, com o seguinte comando:
 
