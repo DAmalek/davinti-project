@@ -1,6 +1,6 @@
 # Projeto com Prisma ORM
 
-Bem-vindo ao projeto que utiliza o Prisma ORM para interagir com o banco de dados. Este README fornecerá as instruções necessárias para você iniciar o projeto localmente.
+Bem-vindo ao projeto Davinti. Este README fornecerá as instruções necessárias para você iniciar o projeto localmente.
 
 ## Requisitos
 
@@ -8,7 +8,7 @@ Certifique-se de ter as seguintes ferramentas instaladas em seu sistema:
 
 - Node.js (https://nodejs.org/)
 - npm (gerenciador de pacotes do Node.js, já incluído na instalação do Node.js)
-- Um banco de dados suportado pelo Prisma (por exemplo, PostgreSQL, MySQL, SQLite)
+- Um banco de dados suportado pelo Prisma ( PostgreSQL )
 
 ## Configuração
 
